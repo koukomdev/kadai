@@ -5,11 +5,6 @@ class SudokuSolver
     MAX_NUM = 9
     PROB_PATH = './sudoku.txt'
 
-    @check_row
-    @check_column
-    @check_block
-    @solve_result
-
     # initialize {{{
     def init
         @prob_list = Array.new
@@ -18,7 +13,7 @@ class SudokuSolver
         rownum = 0
         File.open(PROB_PATH, 'r') do |file|
             file.each do |buf|
-                row = buf.strip.split('')
+                row = buf.strip.split('').map(&:to_i)
                 if row.count != MAX_NUM then
                     error("invalid format column")
                 end
@@ -44,6 +39,39 @@ class SudokuSolver
         end_x = start_x + 2
         end_y = start_y + 2
         return start_x,start_y,end_x,end_y
+    end
+    # }}}
+
+    # チェックリスト生成 {{{
+    def makeCheckList
+        start_x,start_y,end_x,end_y = getBlockRange
+        @check_row = Array.new
+        @check_column = Array.new
+        @check_block = Array.new
+
+        y = 0
+        @result_list.each do |row|
+            if @y_co == y then
+                @check_row = row.clone
+            end
+            x = 0
+            row.each do |col|
+                if @x_co == x then
+                    @check_column.push col
+                end
+                if start_x <= x && x <= end_x && start_y <= y && y <= end_y then
+                    @check_block.push col
+                end
+                x += 1
+            end
+            y += 1
+        end
+    end
+    # }}}
+
+    # 問題に含まれるか {{{
+    def isProblem(x, y)
+        return @prob_list[y][x] != 0
     end
     # }}}
 
