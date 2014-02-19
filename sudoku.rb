@@ -6,7 +6,7 @@ class SudokuSolver
     PROB_PATH = './sudoku.txt'
 
     # initialize {{{
-    def init
+    def initialize
         @prob_list = Array.new
         @x_co = 0
         @y_co = 0
@@ -52,28 +52,24 @@ class SudokuSolver
         @check_column = Array.new
         @check_block = Array.new
 
-        y = 0
-        @result_list.each do |row|
+        @result_list.each_with_index do |row, y|
             if @y_co == y
                 @check_row = row.clone
             end
-            x = 0
-            row.each do |col|
+            row.each_with_index do |col, x|
                 if @x_co == x
                     @check_column.push col
                 end
                 if start_x <= x && x <= end_x && start_y <= y && y <= end_y
                     @check_block.push col
                 end
-                x += 1
             end
-            y += 1
         end
     end
     # }}}
 
     # 問題に含まれるか {{{
-    def isProblem(x, y)
+    def problem?(x, y)
         return @prob_list[y][x] != 0
     end
     # }}}
@@ -96,7 +92,7 @@ class SudokuSolver
             @x_co += 1
         end
 
-        if isProblem(@x_co, @y_co)
+        if problem?(@x_co, @y_co)
             forward
         end
 
@@ -116,7 +112,7 @@ class SudokuSolver
             @x_co -= 1
         end
 
-        if isProblem(@x_co, @y_co)
+        if problem?(@x_co, @y_co)
             back
         end
 
@@ -129,7 +125,7 @@ class SudokuSolver
         catch(:finish) {
             while true
                 # チェック対象ますが問題文に含まれるか調べる
-                if isProblem(@x_co, @y_co)
+                if problem?(@x_co, @y_co)
                     # 問題文に含まれるなら先に進む
                     can_forward = forward
                     unless can_forward
@@ -189,22 +185,17 @@ class SudokuSolver
 
     # output {{{
     def output
-        @solve_result = true
         if @solve_result
             puts "result"
-            y = 0
-            @result_list.each do |row|
-                x = 0
-                row.each do |col|
-                    if isProblem(x, y)
+            @result_list.each_with_index do |row, y|
+                row.each_with_index do |col, x|
+                    if problem?(x, y)
                         print "[#{col}]"
                     else
                         print " #{col} "
                     end
-                    x += 1
                 end
                 print "\n"
-                y += 1
             end
         else
             puts "don't have answer"
@@ -214,7 +205,6 @@ class SudokuSolver
 
     # execute {{{
     def execute
-        init
         solve
         output
     end

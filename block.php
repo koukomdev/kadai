@@ -51,6 +51,9 @@ class Board
     public function setBlock($block_no, $block_obj)
     {
         $blank = $this->getBlankOrigin();
+        if (!$blank) {
+            return false;
+        }
         $end_x = $blank["xo"] + $block_obj->getXco();
         $end_y = $blank["yo"] + $block_obj->getYco();
         if ($end_x <= $this->x_co && $end_y <= $this->y_co) {
