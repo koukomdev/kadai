@@ -147,9 +147,9 @@ class Sudoku_Solver
     private function solve()
     {
         while(true) {
-            // チェック対象ますが固定か調べる
+            // チェック対象ますが問題文に含まれるか調べる
             if ($this->isProblem($this->x_co, $this->y_co)) {
-                // 固定なら先に進む
+                // 問題文に含まれるなら先に進む
                 $can_forward = $this->forward();
                 if (!$can_forward) {
                     $this->solve_result = true;
