@@ -236,13 +236,38 @@ class Block_Arranger
     private function output()
     {
         if ($this->arrange_result) {
+            $color_list = array(
+                0 => '#ffffff', 1 => '#d3d3d3', 2 => '#4169e1', 3 => '#008b8b', 4 => '#bdb76b', 5 => '#ffa500', 6 => '#a52a2a', 7 => '#dc143c', 8 => '#ee82ee', 9 => '#4b0082'
+            );
+
+print <<<DOC1
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<title></title>
+</head>
+<body>
+<table border=1 width=300 align=center>
+
+DOC1;
+
             $board = $this->board_obj->getBoard();
             foreach ($board as $y => $row) {
+                echo "<tr>\n";
                 foreach ($row as $x => $col) {
-                    echo "[" . $col . "]";
+                    $color = $color_list[$col % 10];
+                    echo "<td bgcolor='$color'>$col</td>\n";
                 }
-                echo "\n";
+                echo "</tr>\n";
             }
+
+print <<<DOC2
+</table>
+</body>
+</html>
+
+DOC2;
         } else {
             echo "don't have answer\n";
         }

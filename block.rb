@@ -201,12 +201,33 @@ class Block_Arranger
     # output {{{
     def output
         if @arrange_result
+            color_list = {0 => '#ffffff', 1 => '#d3d3d3', 2 => '#4169e1', 3 => '#008b8b', 4 => '#bdb76b', 5 => '#ffa500', 6 => '#a52a2a', 7 => '#dc143c', 8 => '#ee82ee', 9 => '#4b0082'}
+
+puts <<DOC1
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<title></title>
+</head>
+<body>
+<table border=1 width=300 align=center>
+DOC1
+
             @board_obj.getBoard.each_with_index do |row, y|
+                puts '<tr>'
                 row.each_with_index do |col, x|
-                    print "[#{col}]"
+                    color = color_list[col % 10]
+                    puts "<td bgcolor='#{color}'>#{col}</td>"
                 end
-                print "\n"
+                puts '</tr>'
             end
+
+puts <<DOC2
+</table>
+</body>
+</html>
+DOC2
         else
             puts "don't have answer"
         end
